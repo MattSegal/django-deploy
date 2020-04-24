@@ -25,7 +25,7 @@ scp -r deploy root@\$SERVER:/root/
 rm -rf deploy
 
 echo -e "\n>>>Cleaning files on server $SERVER"
-ssh root@$HOST /bin/bash << EOF
+ssh root@$SERVER /bin/bash << EOF
     set -e
     cd /root/deploy/
     find -name \*.pyc -delete

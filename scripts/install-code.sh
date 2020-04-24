@@ -9,7 +9,7 @@ set -e
 # fi
 
 echo -e "\n>>>Installing app on server $SERVER"
-ssh root@$HOST /bin/bash << EOF
+ssh root@$SERVER /bin/bash << EOF
     set -e
     echo -e "\n>>>Stopping Gunicorn"
     supervisorctl stop gunicorn
