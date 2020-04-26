@@ -1,38 +1,30 @@
 #!/bin/bash
-# Copies Django project to target server.
 set -e
-SERVER=64.225.23.131
-# if [[ -z "$SERVER" ]]
-# then
-#     echo -e "\nERROR: No value set for SERVER."
-#     exit 1
-# fi
-echo -e "\n>>>Copying Django project files to server $SERVER"
 
-echo -e "\n>>>Creating local tempoary deploy dir"
+echo -e "\n>>> Copying Django project files to server."
+if [[ -z "$SERVER" ]]
+then
+    echo "ERROR: No value set for SERVER."
+    exit 1
+fi
+echo -e "\n>>> Preparing scripts locally."
 rm -rf deploy
 mkdir deploy
-
-echo -e "\n>>>Copying files to local tempoary deploy dir"
-cp requirements.txt deploy
-cp -r tute deploy
-cp -r scripts deploy
 cp -r config deploy
+cp -r scripts deploy
+cp -r tute deploy
+cp requirements.txt deploy
 
-echo -e "\n>>>Uploading files to server $SERVER"
-ssh root@\$SERVER "rm -rf /root/deploy/"
-scp -r deploy root@\$SERVER:/root/
-rm -rf deploy
+echo -e "\n>>> Copying files to the server."
+ssh root@$SERVER "rm -rf /root/deploy/"
+scp -r deploy root@$SERVER:/root/
 
-echo -e "\n>>>Cleaning files on server $SERVER"
+echo -e "\n>>> Cleaning up deployed files on the server."
 ssh root@$SERVER /bin/bash << EOF
     set -e
-    cd /root/deploy/
-    find -name \*.pyc -delete
-    find -name **pycache** -delete
-    dos2unix something something
-
-    echo -e "\n>>>Files cleaned:"
-    tree /root/deploy/
+    find /root/deploy/ -name *.pyc -delete
+    find /root/deploy/ -name __pycache__ -delete
+    find /root/deploy -type f -print0 | xargs -0 dos2unix
 EOF
-echo -e "\n>>>Finished copying Django project files to server $SERVER"
+
+echo -e "\n>>> Finished copying Django project files to server."
