@@ -1,5 +1,6 @@
 from django.contrib import admin
 
-from .models import Counter
+from counter.models import Counter, Person
 
 admin.site.register(Counter)
+admin.site.register(Person)
