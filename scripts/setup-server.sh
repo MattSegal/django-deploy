@@ -15,7 +15,7 @@ ssh root@$SERVER /bin/bash << EOF
     apt-get -qq upgrade
 
     echo -e "\n>>> Installing required apt packages"
-    apt-get -qq install python3-pip
+    apt-get -qq install python3-pip dos2unix tree
 
     echo -e "\n>>> Installing virtualenv"
     pip3 install virtualenv
